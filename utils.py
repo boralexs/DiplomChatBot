@@ -159,7 +159,8 @@ class BD:
         tokenizer = RegexTokenizer()
         model = FastTextSocialNetworkModel(tokenizer=tokenizer)
         result = model.predict([x[0][5]], k=5)
-        res = 10 * (result[0]['neutral'] - result[0]['negative'] + result[0]['positive'])
+        dl = result[0]['neutral'] + result[0]['negative'] + result[0]['positive']
+        res = 10 * (result[0]['neutral']/dl - result[0]['negative']/dl + result[0]['positive']/dl)
         if abs(sr-res) <= valid_const:
             self.set_comment(film_id, user_id, 'comm_check', 1)
             self.conn.commit()
